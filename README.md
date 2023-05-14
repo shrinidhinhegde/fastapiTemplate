@@ -42,7 +42,7 @@ poetry install
 python main.py
 </pre>
 <p>A local postgres database has to be set up.</p>
-<p>NOTE: If you are facing <code>ModuleNotFoundError: No module named 'src'</code> set the env variable <code>PYTHONPATH</code> using <code>export PYTHONPATH "${PYTHONPATH}:/path/to/approot"</code> and you can use <code>set PYTHONPATH="${PYTHONPATH}:/path/to/approot"</code> on a windows machine</p>
+<p>NOTE: If you are facing <code>ModuleNotFoundError: No module named 'src'</code> set the env variable <code>PYTHONPATH</code> using <code>export PYTHONPATH="${PYTHONPATH}:/path/to/approot"</code> and you can use <code>set PYTHONPATH="${PYTHONPATH}:/path/to/approot"</code> on a windows machine</p>
 
 <h3>Alternatively</h3>
 
