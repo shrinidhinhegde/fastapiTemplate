@@ -16,11 +16,6 @@ pip install poetry
 poetry --version
 </pre>
 
-<p>
-If your IDE wants a virtual environment configured, run <code>poetry env info</code>
-and copy the path of the virtual environment and paste it into your IDE's configuration.
-</p>
-
 <h2>Project Installation</h2>
 
 <p>The Project working directory is the <code>src</code> directory. The root folder only contains <code>poetry</code> and <code>docker</code> config files. Hence, all the <code>alembic</code> and <code>FastAPI</code> commands can be run only from the working directory</p>
@@ -28,20 +23,25 @@ and copy the path of the virtual environment and paste it into your IDE's config
 <h4>Add a <code>.env</code> file inside the working directory (you can find an example at <code>
 .env.example</code>)</h4>
 
-<p>Poetry virtual environment can be activated using</p>
-<pre>
-poetry shell
-</pre>
-
 <p>Install the project dependencies using the following command:</p>
 <pre>
 poetry install
+</pre>
+<p>this command automatically creates a virtual environment and then installs the dependencies</p>
+<p>Poetry virtual environment can be activated using</p>
+<pre>
+source $(poetry env info --path)/bin/activate
 </pre>
 <p>and run:</p>
 <pre>
 python main.py
 </pre>
+
 <p>A local postgres database has to be set up.</p>
+<p>
+If your IDE wants a virtual environment configured, run <code>poetry env info</code>
+and copy the path of the virtual environment and paste it into your IDE's configuration.
+</p>
 <p>NOTE: If you are facing <code>ModuleNotFoundError: No module named 'src'</code> set the env variable <code>PYTHONPATH</code> using <code>export PYTHONPATH="${PYTHONPATH}:/path/to/approot"</code> and you can use <code>set PYTHONPATH="${PYTHONPATH}:/path/to/approot"</code> on a windows machine</p>
 
 <h3>Alternatively</h3>
