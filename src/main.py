@@ -3,9 +3,13 @@ import os
 import uvicorn
 from dotenv import dotenv_values, load_dotenv
 from fastapi import FastAPI
+from starlette.middleware.cors import CORSMiddleware
 
 server = FastAPI(title='Application Title',
                  description='Application Description. Add more details here. Takes in Markdown format as well.')
+
+server.add_middleware(CORSMiddleware, allow_origins=["*"], allow_credentials=True, allow_methods=["*"],
+                      allow_headers=["*"], )
 
 
 @server.get("/", tags=["App Root"])
