@@ -69,3 +69,27 @@ alembic upgrade head
 
 <p>Note - Alembic is not 100% accurate always so check migration file manually and make corrections if needed</p>
 <p>Refer alembic documentation <a href="https://alembic.sqlalchemy.org/en/latest/">here</a></p>
+
+<h2>Versioning</h2>
+
+<p>You can use the <code>poetry version</code> command to automatically bump the version of your project. Here's an example of how to
+use it to bump the patch version: </p>
+
+<pre>
+poetry version patch
+</pre>
+
+<p>This will update the version number in your <code>pyproject.toml</code> file and create a new commit with the updated
+version
+number.</p>
+
+<p>You can also use <code>minor</code> or <code>major</code> instead of <code>patch</code> to bump the minor or major version, respectively.</p>
+
+<pre>
+poetry version patch
+git add [files]
+git commit -m "commit message"
+git tag $(poetry version --short)
+</pre>
+
+<p>This will create a new commit with the updated version number and a new git tag with the same version number.</p>
