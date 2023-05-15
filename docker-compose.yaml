@@ -1,11 +1,11 @@
 version: '3.8'
 services:
-  redis-server:
+  app-redis-server:
     image: redis:latest
     restart: always
     ports:
       - "6379:6379"
-  appDB:
+  app-db:
     image: postgres:latest
     restart: always
     volumes:
@@ -20,20 +20,20 @@ services:
       context: .
       dockerfile: Dockerfile
     depends_on:
-      - appDB
-      - redis-server
+      - app-db
+      - app-redis-server
     restart: on-failure
     volumes:
       - .:/server
     ports:
       - "8000:8000"
-  worker:
+  app-celery-worker:
     build:
       context: .
       dockerfile: Dockerfile
     depends_on:
       - app-web-server
-      - redis-server
+      - app-redis-server
     restart: always
     volumes:
       - .:/server
