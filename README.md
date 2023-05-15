@@ -93,3 +93,17 @@ git tag $(poetry version --short)
 </pre>
 
 <p>This will create a new commit with the updated version number and a new git tag with the same version number.</p>
+
+<h2>Testing</h2>
+
+<p>Testing has been set up using <code>httpx</code> and <code>pytest-asyncio</code>. Test can be found under <code>tests</code> package</p>
+
+<p>Testing will be done on a test database which needs to be configured on the same host. The name of the database has to be added to .env as <code>POSTGRES_TEST_DB</code></p>
+
+<p>Run the following command to run the tests</p>
+<pre>
+pytest
+</pre>
+
+<p>Test fixtures can be configured in <code>tests/conftest.py</code></p>
+<p>NOTE: All the test files must be of the format <code>test_*.py</code> and can use the <code>test_client</code> found in <code>test_main.py</code></p>
