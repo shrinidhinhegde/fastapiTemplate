@@ -2,7 +2,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
 from src.database_config import get_database_session, Base
-from src.env import env_variables
+from src.env_config.env import env_variables
 from src.main import server
 
 APP_TEST_DATABASE_URL = f'postgresql://{env_variables.APP_DB_USER}:{env_variables.APP_DB_PASSWORD}@' \

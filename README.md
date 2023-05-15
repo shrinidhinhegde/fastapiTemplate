@@ -20,7 +20,7 @@ poetry --version
 
 <p>The Project working directory is the <code>src</code> directory. The root folder only contains <code>poetry</code> and <code>docker</code> config files. Hence, all the <code>alembic</code> and <code>FastAPI</code> commands can be run only from the working directory</p>
 
-<h4>Add a <code>.env</code> file inside the working directory (you can find an example at <code>
+<h4>Add a <code>.env</code> file inside <code>env_config</code> the working directory (you can find an example at <code>
 .env.example</code>)</h4>
 
 <p>Install the project dependencies using the following command:</p>
@@ -107,3 +107,17 @@ pytest
 
 <p>Test fixtures can be configured in <code>tests/conftest.py</code></p>
 <p>NOTE: All the test files must be of the format <code>test_*.py</code> and can use the <code>test_client</code> found in <code>test_main.py</code></p>
+
+<h2>Celery - Redis</h2>
+
+<p>Celery worker and a redis server has been set up in <code>docker-compose.yaml</code></p>
+
+<p>Follow <a href="https://www.jetbrains.com/pycharm/guide/tutorials/fastapi-aws-kubernetes/redis_celery/">this blog</a> to setup a redis server locally</p>
+<p>Celery worker can be created using the following command:</p>
+<pre>
+celery -A main.celery worker -B -l info
+</pre>
+
+<p>Celery tasks can be configured but the path to these tasks have to be added in <code>celery.conf.imports</code> in <code>src/main.py</code>. And once new tasks are added. The celery workers have to be restarted.</p>
+
+<p>The tasks can be started by using <code>.delay()</code> method.</p>

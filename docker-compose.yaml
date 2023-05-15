@@ -1,12 +1,17 @@
 version: '3.8'
 services:
+  redis-server:
+    image: redis:latest
+    restart: always
+    ports:
+      - "6379:6379"
   appDB:
     image: postgres:latest
     restart: always
     volumes:
       - app-db-data:/var/lib/postgresql/data
     env_file:
-      - src/.env
+      - src/env_config/.env
     ports:
       - "5432:5432"
   app-web-server:
@@ -16,10 +21,27 @@ services:
       dockerfile: Dockerfile
     depends_on:
       - appDB
+      - redis-server
     restart: on-failure
     volumes:
       - .:/server
     ports:
       - "8000:8000"
+  worker:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    depends_on:
+      - app-web-server
+      - redis-server
+    restart: always
+    volumes:
+      - .:/server
+    env_file:
+      - src/env_config/.env
+    command:
+      - bash
+      - -c
+      - celery -A main.celery worker -B -l info
 volumes:
   app-db-data:

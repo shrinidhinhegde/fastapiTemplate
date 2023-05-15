@@ -1,29 +1,43 @@
 import os
 
 import uvicorn
+from celery import Celery
 from dotenv import dotenv_values, load_dotenv
 from fastapi import FastAPI
 from starlette.middleware.cors import CORSMiddleware
 
+from celery_tasks import tasks
+from env_config.env import env_variables
+
+# FastAPI Configuration
 server = FastAPI(title='Application Title',
                  description='Application Description. Add more details here. Takes in Markdown format as well.')
-
 server.add_middleware(CORSMiddleware, allow_origins=["*"], allow_credentials=True, allow_methods=["*"],
                       allow_headers=["*"], )
 
+# Celery Configuration
+celery = Celery(__name__, broker=f'redis://{env_variables.REDIS_HOST}:{env_variables.REDIS_PORT}/0',
+                backend=f'redis://{env_variables.REDIS_HOST}:{env_variables.REDIS_PORT}/0')
+celery.conf.imports = [
+    'celery_tasks.tasks',
+    # more tasks here
+]
 
+
+# Routes
 @server.get("/", tags=["App Root"])
-def root():
+async def root():
     return {"message": "Welcome to App Backend"}
 
 
 @server.get("/health", tags=["App Root"])
-def health():
+async def health():
+    tasks.test_shared_task.delay()
     return {"message": "OK"}
 
 
 if __name__ == "__main__":
-    env_vars = list(dotenv_values('.env.example').keys())
+    env_vars = list(dotenv_values('env_config/.env.example').keys())
 
     load_dotenv()
     try:

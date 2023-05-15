@@ -12,6 +12,8 @@ class EnvironmentVariables:
     APP_DB_HOST = os.getenv("POSTGRES_HOST")
     APP_DB_PORT = os.getenv("POSTGRES_PORT")
     APP_TEST_DB = os.getenv("POSTGRES_TEST_DB")
+    REDIS_HOST = os.getenv("REDIS_HOST")
+    REDIS_PORT = os.getenv("REDIS_PORT")
     # any other environment variables you want to use in your application
 
 
