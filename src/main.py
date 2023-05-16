@@ -55,7 +55,8 @@ if __name__ == "__main__":
             x = os.environ[var]
     except KeyError as e:
         print(
-            f"Please set the environment variable {e}. Application must contain {env_vars}"
+            f"Please set the environment variable {e}. Application must contain all the environment variables in "
+            f".env.example"
         )
         exit(1)
     uvicorn.run("main:server", host="0.0.0.0", port=8000, reload=True)
