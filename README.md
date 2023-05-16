@@ -55,6 +55,22 @@ docker-compose up
 
 <p>The API documentation can be accessed <a href="https://localhost:8000/docs">here</a></p>
 
+<h2>Packages</h2>
+
+<p>Few packages have already been added to the project.</p>
+
+<p>You can add new packages using the following command</p>
+
+<pre>
+poetry add {package-name}
+</pre>
+
+<p>If you wish to add a package as a dev dependency. Use the following command</p>
+
+<pre>
+poetry add --group dev {package-name}
+</pre>
+
 <h2>Database migrations using alembic</h3>
 
 <p>To generate migration files run the following command</p>
