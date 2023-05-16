@@ -10,16 +10,26 @@ from celery_tasks import tasks
 from env_config.env import env_variables
 
 # FastAPI Configuration
-server = FastAPI(title='Application Title',
-                 description='Application Description. Add more details here. Takes in Markdown format as well.')
-server.add_middleware(CORSMiddleware, allow_origins=["*"], allow_credentials=True, allow_methods=["*"],
-                      allow_headers=["*"], )
+server = FastAPI(
+    title="Application Title",
+    description="Application Description. Add more details here. Takes in Markdown format as well.",
+)
+server.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 # Celery Configuration
-celery = Celery(__name__, broker=f'redis://{env_variables.REDIS_HOST}:{env_variables.REDIS_PORT}/0',
-                backend=f'redis://{env_variables.REDIS_HOST}:{env_variables.REDIS_PORT}/0')
+celery = Celery(
+    __name__,
+    broker=f"redis://{env_variables.REDIS_HOST}:{env_variables.REDIS_PORT}/0",
+    backend=f"redis://{env_variables.REDIS_HOST}:{env_variables.REDIS_PORT}/0",
+)
 celery.conf.imports = [
-    'celery_tasks.tasks',
+    "celery_tasks.tasks",
     # more tasks here
 ]
 
@@ -37,13 +47,15 @@ async def health():
 
 
 if __name__ == "__main__":
-    env_vars = list(dotenv_values('env_config/.env.example').keys())
+    env_vars = list(dotenv_values("env_config/.env.example").keys())
 
     load_dotenv()
     try:
         for var in env_vars:
             x = os.environ[var]
     except KeyError as e:
-        print(f"Please set the environment variable {e}. Application must contain {env_vars}")
+        print(
+            f"Please set the environment variable {e}. Application must contain {env_vars}"
+        )
         exit(1)
     uvicorn.run("main:server", host="0.0.0.0", port=8000, reload=True)

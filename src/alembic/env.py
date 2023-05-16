@@ -14,9 +14,10 @@ config = context.config
 # dynamically setting up postgres connectivity
 config.set_main_option(
     "sqlalchemy.url",
-    f'postgresql://{env_variables.APP_DB_USER}:'
-    f'{env_variables.APP_DB_PASSWORD}@{env_variables.APP_DB_HOST}:'
-    f'{env_variables.APP_DB_PORT}/{env_variables.APP_DB}')
+    f"postgresql://{env_variables.APP_DB_USER}:"
+    f"{env_variables.APP_DB_PASSWORD}@{env_variables.APP_DB_HOST}:"
+    f"{env_variables.APP_DB_PORT}/{env_variables.APP_DB}",
+)
 
 # Interpret the config file for Python logging.
 # This line sets up loggers basically.
@@ -74,9 +75,7 @@ def run_migrations_online() -> None:
     )
 
     with connectable.connect() as connection:
-        context.configure(
-            connection=connection, target_metadata=target_metadata
-        )
+        context.configure(connection=connection, target_metadata=target_metadata)
 
         with context.begin_transaction():
             context.run_migrations()

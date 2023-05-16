@@ -121,3 +121,14 @@ celery -A main.celery worker -B -l info
 <p>Celery tasks can be configured but the path to these tasks have to be added in <code>celery.conf.imports</code> in <code>src/main.py</code>. And once new tasks are added. The celery workers have to be restarted.</p>
 
 <p>The tasks can be started by using <code>.delay()</code> method.</p>
+
+<h2>Code Formatting</h2>
+
+<p><code>black</code> python formatter added and project is using default configurations.</p>
+<p>To format, you can run:</p>
+
+<pre>
+black {source_file_or_directory}
+</pre>
+
+<p>Make sure to run the formatter before committing the files. You can configure your IDE to auto format everytime you save your file.</p>
