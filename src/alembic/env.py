@@ -1,8 +1,9 @@
+import asyncio
 from logging.config import fileConfig
 
 from alembic import context
-from sqlalchemy import engine_from_config
 from sqlalchemy import pool
+from sqlalchemy.ext.asyncio import async_engine_from_config
 
 from src.database_models.models import Base
 from src.env_config.env import env_variables
@@ -14,7 +15,7 @@ config = context.config
 # dynamically setting up postgres connectivity
 config.set_main_option(
     "sqlalchemy.url",
-    f"postgresql://{env_variables.APP_DB_USER}:"
+    f"postgresql+asyncpg://{env_variables.APP_DB_USER}:"
     f"{env_variables.APP_DB_PASSWORD}@{env_variables.APP_DB_HOST}:"
     f"{env_variables.APP_DB_PORT}/{env_variables.APP_DB}",
 )
@@ -55,33 +56,44 @@ def run_migrations_offline() -> None:
         target_metadata=target_metadata,
         literal_binds=True,
         dialect_opts={"paramstyle": "named"},
+        compare_type=True
     )
 
     with context.begin_transaction():
         context.run_migrations()
 
 
-def run_migrations_online() -> None:
+def do_run_migrations(connection):
+    context.configure(connection=connection, target_metadata=target_metadata)
+
+    with context.begin_transaction():
+        context.run_migrations()
+
+
+async def run_migrations_online() -> None:
     """Run migrations in 'online' mode.
 
     In this scenario we need to create an Engine
     and associate a connection with the context.
 
     """
-    connectable = engine_from_config(
+    connectable = async_engine_from_config(
         config.get_section(config.config_ini_section, {}),
         prefix="sqlalchemy.",
         poolclass=pool.NullPool,
     )
 
-    with connectable.connect() as connection:
-        context.configure(connection=connection, target_metadata=target_metadata)
+    async with connectable.connect() as connection:
+        await connection.run_sync(do_run_migrations)
 
-        with context.begin_transaction():
-            context.run_migrations()
+    # async with connectable.connect() as connection:
+    #     await context.configure(connection=connection, target_metadata=target_metadata)
+    #
+    #     async with context.begin_transaction():
+    #         await context.run_migrations()
 
 
 if context.is_offline_mode():
     run_migrations_offline()
 else:
-    run_migrations_online()
+    asyncio.run(run_migrations_online())
