@@ -26,12 +26,12 @@ async def init_models():
 asyncio.run(init_models())
 
 
-def override_get_database_session():
-    try:
-        test_session = TestingSessionLocal()
-        yield test_session
-    finally:
-        test_session.close()
+async def override_get_database_session():
+    async with TestingSessionLocal() as session:
+        try:
+            yield session
+        finally:
+            session.close()
 
 
 server.dependency_overrides[get_database_session] = override_get_database_session
