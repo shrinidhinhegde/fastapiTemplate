@@ -5,6 +5,8 @@ services:
     restart: always
     ports:
       - "6379:6379"
+    volumes:
+      - app-redis-data:/data
   app-db:
     image: postgres:latest
     restart: always
@@ -45,3 +47,4 @@ services:
       - celery -A main.celery worker -B -l info
 volumes:
   app-db-data:
+  app-redis-data:
