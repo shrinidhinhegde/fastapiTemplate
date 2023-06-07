@@ -18,7 +18,9 @@ poetry --version
 
 <h2>Project Installation</h2>
 
-<p>The Project working directory is the <code>src</code> directory. The root folder only contains <code>poetry</code> and <code>docker</code> config files. Hence, all the <code>alembic</code> and <code>FastAPI</code> commands can be run only from the working directory</p>
+<p>The Project working directory is the <code>src</code> directory. The root folder only contains <code>poetry</code> 
+and <code>docker</code> config files. Hence, all the <code>alembic</code> and <code>FastAPI</code> commands can 
+be run only from the working directory</p>
 
 <h4>Add a <code>.env</code> file inside <code>env_config</code> the working directory (you can find an example at <code>
 .env.example</code>)</h4>
@@ -30,8 +32,9 @@ poetry install
 <p>this command automatically creates a virtual environment and then installs the dependencies</p>
 <p>Poetry virtual environment can be activated using</p>
 <pre>
-source $(poetry env info --path)/bin/activate
+poetry run activate
 </pre>
+<p>or alternatively use <code>source $(poetry env info --path)/bin/activate</code></p>
 <p>and run:</p>
 <pre>
 python main.py
@@ -48,10 +51,11 @@ and copy the path of the virtual environment and paste it into your IDE's config
 
 <p><code>docker-compose.yaml</code> is configured with a persistent database volume which is retained in your system unless cleared explicitly and the server and local database can be started using the following command:</p>
 <pre>
-docker-compose up
+poetry run local
 </pre>
+<p>or alternatively <code>docker-compose up -d</code></p>
 
-<p>The database migrations has to be applied by running <code>alembic upgrade head</code>. If you are using docker, run this command in <code>app-web-server</code> container</p>
+<p>The database migrations has to be applied by running <code>poetry run migrate</code>. If you are using docker, run this command in <code>app-web-server</code> container</p>
 
 <p>The API documentation can be accessed <a href="https://localhost:8000/docs">here</a></p>
 
@@ -75,13 +79,15 @@ poetry add --group dev {package-name}
 
 <p>To generate migration files run the following command</p>
 <pre>
-alembic revision --autogenerate -m "migration message"
+poetry run make_migrations
 </pre>
+<p>alternatively, you can use <code>alembic revision --autogenerate -m "migration message"</code></p>
 
 <p>After generating the migration files, run the following command to migrate models</p>
 <pre>
-alembic upgrade head
+poetry run migrate
 </pre>
+<p>or alternatively <code>alembic upgrade head</code></p>
 
 <p>Note - Alembic is not 100% accurate always so check migration file manually and make corrections if needed</p>
 <p>Refer alembic documentation <a href="https://alembic.sqlalchemy.org/en/latest/">here</a></p>
@@ -116,10 +122,11 @@ git tag $(poetry version --short)
 
 <p>Testing will be done on a test database which needs to be configured on the same host. The name of the database has to be added to .env as <code>POSTGRES_TEST_DB</code></p>
 
-<p>Run the following command to run the tests</p>
+<p>Run the following command to run all the tests</p>
 <pre>
-pytest
+poetry run tests
 </pre>
+<p>or alternatively run <code>pytest {file_name}</code> to run particular test module</p>
 
 <p>Test fixtures can be configured in <code>tests/conftest.py</code></p>
 <p>NOTE: All the test files must be of the format <code>test_*.py</code> and can use the <code>test_client</code> found in <code>test_main.py</code></p>
@@ -141,10 +148,11 @@ celery -A main.celery worker -B -l info
 <h2>Code Formatting</h2>
 
 <p><code>black</code> python formatter added and project is using default configurations.</p>
-<p>To format, you can run:</p>
-
+<p>To format all the files in the project, you can run:</p>
 <pre>
-black {source_file_or_directory}
+poetry run lint
 </pre>
 
+
+<p>or alternatively, <code>black {source_file_or_directory}</code></p>
 <p>Make sure to run the formatter before committing the files. You can configure your IDE to auto format everytime you save your file.</p>

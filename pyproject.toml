@@ -4,6 +4,9 @@ version = "0.1.0"
 description = "Template for fastapi backend"
 authors = ["Shri <shrinidhi.hegde@equentis.com>"]
 readme = "README.md"
+packages = [
+    { include = "poetry_utils.py", from = '.' },
+]
 
 [tool.poetry.dependencies]
 python = "^3.10"
@@ -20,6 +23,14 @@ asyncpg = "^0.27.0"
 
 [tool.poetry.group.dev.dependencies]
 black = "^23.3.0"
+
+[tool.poetry.scripts]
+activate = "poetry_utils:activate"
+make_migrations = "poetry_utils:make_migrations"
+migrate = "poetry_utils:migrate"
+local = "poetry_utils:local_server"
+lint = "poetry_utils:lint"
+tests = "poetry_utils:test"
 
 [build-system]
 requires = ["poetry-core"]
