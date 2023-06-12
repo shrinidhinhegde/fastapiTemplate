@@ -156,3 +156,9 @@ poetry run lint
 
 <p>or alternatively, <code>black {source_file_or_directory}</code></p>
 <p>Make sure to run the formatter before committing the files. You can configure your IDE to auto format everytime you save your file.</p>
+
+
+<h2>Debugging</h2>
+
+<p>Python - Ice Cream has been installed in this project as a dev dependency. You can use the <code>ic()</code> to debug you code.</p>
+<p>For more info <a href="https://github.com/gruns/icecream">visit</a></p>
