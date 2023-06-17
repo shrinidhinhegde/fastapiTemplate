@@ -1,9 +1,11 @@
+import asyncio
 import os
 
-import uvicorn
 from celery import Celery
 from dotenv import dotenv_values, load_dotenv
 from fastapi import FastAPI
+from hypercorn import Config
+from hypercorn.asyncio import serve
 from starlette.middleware.cors import CORSMiddleware
 
 from celery_tasks import tasks
@@ -38,7 +40,6 @@ celery.conf.imports = [
 # @server.on_event("startup")
 # async def init_tables():
 #     async with engine.begin() as conn:
-#         await conn.run_sync(Base.metadata.drop_all)
 #         await conn.run_sync(Base.metadata.create_all)
 
 
@@ -67,4 +68,10 @@ if __name__ == "__main__":
             f".env.example"
         )
         exit(1)
-    uvicorn.run("main:server", host="0.0.0.0", port=8000, reload=True)
+
+    config = Config()
+    config.bind = ['0.0.0.0:8000']
+    config.quic_bind = ['0.0.0.0:4433']
+    config.accesslog = "-"
+
+    asyncio.run(serve(server, config))
